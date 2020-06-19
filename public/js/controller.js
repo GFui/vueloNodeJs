@@ -33,7 +33,7 @@ angular.module('myApp', ['ngRoute'])
 
 		};
 
-		$scope.formatearFecha = function (fecha) { //Este es para buscar en la db
+		$scope.formatearFecha = function (fecha) { //Este es para buscar en la db, aqui fecha es un objeto tipo Date
 			
 		
 			if (fecha != null) {
@@ -52,8 +52,8 @@ angular.module('myApp', ['ngRoute'])
 
 		};
 
-		$scope.formatearFecha2 = function (fecha) { //Este para presentarla en tablas
-			console.log(fecha);
+		$scope.formatearFecha2 = function (fecha) { //Este para presentarla en tablas, aqui fecha se pasa como un string
+			
 			//2020-09-04T17:30:00.000Z
 			
 			var fechaYHora = fecha.split('T');
