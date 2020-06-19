@@ -14,6 +14,7 @@
             <label></label>
             <button type="button" class="btn btn-primary flight" ng-click="Buscarvuelos()">Mostrar Vuelos</button>
         </div>
+        
     </div>
 </div>
 </div>
@@ -30,20 +31,26 @@
 				<th scope="col">Bussiness</th>
 				<th scope="col">Optima</th>
 				<th scope="col">Economy</th>
+				<th scope="col">Plazas Bussiness</th>
+				<th scope="col">Plazas Economy</th>
+				<th scope="col">Plazas Optima</th>
 				<th scope="col">Comprar</th>
 			</tr>
 		</thead>
 		<tbody>
 
-			<tr ng-repeat="x in myData | filter:{ origen: origen, destino: destino, salida:formatearFecha(salida)} | limitTo:30 ">
+			<tr ng-repeat="x in myData">
 				<td>{{x.vuelo}}</td>
 				<td>{{x.origen}}</td>
 				<td>{{x.destino}}</td>
-				<td>{{cambioHora(x.salida)}}</td>
-				<td>{{cambioHora(x.llegada)}}</td>
-				<td>{{x.bussiness+"€"}}</td>
-				<td>{{x.optima+"€"}}</td>
-				<td>{{x.economy+"€"}}</td>
+				<td>{{formatearFecha2(x.salida)}}</td>
+				<td>{{formatearFecha2(x.llegada)}}</td>
+				<td>{{x.precio_business+"€"}}</td>
+				<td>{{x.precio_optima+"€"}}</td>
+				<td>{{x.precio_economy+"€"}}</td>
+				<td>{{x.plazas_business}}</td>
+				<td>{{x.plazas_optima}}</td>
+				<td>{{x.plazas_economy}}</td>
 				<td><a class="btn btn-primary" href="/#!/vuelo/{{x}}">Seleccionar</a></td>
 			</tr>
 		</tbody>

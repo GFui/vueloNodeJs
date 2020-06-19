@@ -17,21 +17,15 @@
         </select> <br> <br>
 
 
-
     </div>
-
-
-
-
-
 
     <br>
     <div class="booking-form-box-2 col-6" ng-if="billeteVuelta != null && idaVuelta.valor==2">
         Vuelta seleccionada:
         <p>Origen: {{billeteVuelta.origen}}</p>
         <p>Destino: {{billeteVuelta.destino}}</p>
-        <p>Salida: {{formatearFecha(billeteVuelta.salida)}}</p>
-        <p>Llegada: {{formatearFecha(billeteVuelta.llegada)}}</p>
+        <p>Salida: {{formatearFecha2(billeteVuelta.salida)}}</p>
+        <p>Llegada: {{formatearFecha2(billeteVuelta.llegada)}}</p>
 
         <br>
 
@@ -87,8 +81,8 @@
                 <td>{{x.vuelo}}</td>
                 <td>{{x.origen}}</td>
                 <td>{{x.destino}}</td>
-                <td>{{formatearFecha(x.salida)}}</td>
-                <td>{{formatearFecha(x.llegada)}}</td>
+                <td>{{formatearFecha2(x.salida)}}</td>
+                <td>{{formatearFecha2(x.llegada)}}</td>
                 <td>{{x.bussiness+"€"}}</td>
                 <td>{{x.optima+"€"}}</td>
                 <td>{{x.economy+"€"}}</td>
