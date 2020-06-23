@@ -18,15 +18,21 @@ angular.module('myApp', ['ngRoute'])
 		$scope.Buscarvuelos = function () {
 
 			if ($scope.origen == "" || $scope.origen == null) {
-				$window.alert("No has seleccionado una ciudad de origen!");
+				window.alert("No has seleccionado una ciudad de origen!");
+			} else if ($scope.destino == "" || $scope.destino == null) {
+
+				window.alert("No has seleccionado una ciudad de destino!");
 			} else if ($scope.salida == "" || $scope.salida == null) {
-				$window.alert("No has seleccionado fecha de salida!");
+				window.alert("No has seleccionado fecha de salida!");
 			} else {
 				$scope.myData = [];
 				$scope.bandera = 1;
 				$http.get("vuelos/" + $scope.origen + '/' + $scope.destino + '/' + $scope.formatearFecha($scope.salida)).then(function (response) {
 
 					$scope.myData = JSON.parse(JSON.stringify(response.data));
+					if ($scope.myData.length == 0) {
+						window.alert("No existe ningún vuelo que coincida con tu búsqueda");
+					}
 
 				});
 			}
@@ -34,8 +40,8 @@ angular.module('myApp', ['ngRoute'])
 		};
 
 		$scope.formatearFecha = function (fecha) { //Este es para buscar en la db, aqui fecha es un objeto tipo Date
-			
-		
+
+
 			if (fecha != null) {
 				var d = new Date(fecha),
 					month = '' + (d.getMonth() + 1),
@@ -53,16 +59,16 @@ angular.module('myApp', ['ngRoute'])
 		};
 
 		$scope.formatearFecha2 = function (fecha) { //Este para presentarla en tablas, aqui fecha se pasa como un string
-			
+
 			//2020-09-04T17:30:00.000Z
-			
+
 			var fechaYHora = fecha.split('T');
 			var soloFecha = fechaYHora[0];
 			var soloHora = fechaYHora[1].split('.')[0]; // para quitar el .00Z
-			
+
 			var horaTotal = soloFecha + ", a las " + soloHora;
 			return horaTotal;
-			
+
 
 		};
 
@@ -80,6 +86,8 @@ angular.module('myApp', ['ngRoute'])
 
 		$scope.numeroDeBilletes = 1;
 
+		$scope.salidaVuelta = "";
+
 		$scope.addBillete = function (val) {
 
 			$scope.numeroDeBilletes += val;
@@ -91,22 +99,23 @@ angular.module('myApp', ['ngRoute'])
 
 		$scope.opcionesVueloIda = [{
 			tipo: "Economy",
-			precio: $scope.billeteIda.economy
-            }, {
+			precio: $scope.billeteIda.precio_economy
+		}, {
 			tipo: "Optima",
-			precio: $scope.billeteIda.optima
-            }, {
+			precio: $scope.billeteIda.precio_optima
+		}, {
 			tipo: "Bussiness ",
-			precio: $scope.billeteIda.bussiness
-            }];
+			precio: $scope.billeteIda.precio_business
+		}];
 
 		$scope.opcionesIdaVuelta = [{
 			tipo: "Ida",
 			valor: 1
-                }, {
+		}, {
 			tipo: "Ida y vuelta",
 			valor: 2
-                }];
+		}];
+
 		$scope.formatearFecha = function (fecha) { //Este es para buscar en la db
 
 			if (fecha != null) {
@@ -127,31 +136,16 @@ angular.module('myApp', ['ngRoute'])
 
 		$scope.formatearFecha2 = function (fecha) { //Este para presentarla en tablas
 
-			if (fecha != null) {
-				var d = new Date(fecha),
-					month = '' + (d.getMonth() + 1),
-					day = '' + d.getDate(),
-					year = d.getFullYear(),
-					hour = d.getHours(),
-					minutes = d.getMinutes();
+			//2020-09-04T17:30:00.000Z
 
-				if (month.length < 2)
-					month = '0' + month;
-				if (day.length < 2)
-					day = '0' + day;
+			var fechaYHora = fecha.split('T');
+			var soloFecha = fechaYHora[0];
+			var soloHora = fechaYHora[1].split('.')[0]; // para quitar el .00Z
 
-				var horaTotal = [day, month, year].join('-') + ", a las " + [hour, minutes].join(':')
-				return horaTotal;
-			}
+			var horaTotal = soloFecha + ", a las " + soloHora;
+			return horaTotal;
 
 		};
-
-		$scope.getVuelta = function () {
-			$http.get("js/vuelos.json").then(function (response) {
-				$scope.vuelosVuelta = response.data.vuelos;
-
-			});
-		}();
 
 
 		$scope.escogerVuelta = function (x) {
@@ -160,14 +154,14 @@ angular.module('myApp', ['ngRoute'])
 
 			$scope.opcionesVueloVuelta = [{
 				tipo: "Economy",
-				precio: $scope.billeteVuelta.economy
-            }, {
+				precio: $scope.billeteVuelta.precio_economy
+			}, {
 				tipo: "Optima",
-				precio: $scope.billeteVuelta.optima
-            }, {
+				precio: $scope.billeteVuelta.precio_optima
+			}, {
 				tipo: "Bussiness",
-				precio: $scope.billeteVuelta.bussiness
-            }];
+				precio: $scope.billeteVuelta.precio_business
+			}];
 
 
 		}
@@ -185,10 +179,32 @@ angular.module('myApp', ['ngRoute'])
 
 			}
 		}
+
 		$scope.finalizarCompra = function () {
 
-			$window.alert("Su compra se ha realizado con éxito, recibirá el producto en su dirección habitual");
+			window.alert("Su compra se ha realizado con éxito, recibirá el producto en su dirección habitual");
 
-		}
+		};
+
+
+		$scope.$watch('salidaVuelta', function updatePdfUrl(newsalidaVuelta, oldsalidaVuelta) {
+			if (newsalidaVuelta != oldsalidaVuelta) {
+
+				console.log("salida vuelta: " + $scope.formatearFecha($scope.salidaVuelta) + ", llegada ida: " + $scope.formatearFecha($scope.billeteIda.llegada));
+				if ($scope.formatearFecha($scope.salidaVuelta) < $scope.formatearFecha($scope.billeteIda.llegada)) {
+					window.alert("La fecha de salida del vuelo de vuelta es anterior a la fecha de llegada!");
+					$scope.salidaVuelta = oldsalidaVuelta;
+				} else {
+
+					$scope.vuelosVuelta = [];
+					$http.get("vuelos/vuelta/" + $scope.billeteIda.destino + '/' + $scope.billeteIda.origen + '/' + $scope.formatearFecha($scope.salidaVuelta)).
+						then(function (response) {
+							$scope.vuelosVuelta = JSON.parse(JSON.stringify(response.data));
+							console.log($scope.vuelosVuelta);
+							console.log("vuelos/vuelta/" + $scope.billeteIda.destino + '/' + $scope.billeteIda.origen + '/' + $scope.formatearFecha($scope.billeteIda.llegada));
+						});
+				}
+			}
+		});
 
 	});

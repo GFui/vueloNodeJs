@@ -54,41 +54,52 @@
     </div>
 </div>
 
-<div  ng-if="idaVuelta.valor==2 && billeteVuelta==null">
+<div  ng-if="idaVuelta.valor==2 && billeteVuelta==null ">
+    
     <div class="booking-form-box-2">
         <label>Fecha de vuelta: </label>
-    
-    <input type="date" ng-model="salida2" class="form-control select-date">
-        </div>
+        <input type="date" ng-model="$parent.salidaVuelta" class="form-control select-date">
+    </div>
+</div>
+
+<div  ng-if="idaVuelta.valor==2 && billeteVuelta==null && salidaVuelta != '' ">
+
     <div class = "container-tabla">
     <table id="dtBasicExample" class="table" cellspacing="0" width="100%">
         <thead class="thead-dark">
             <tr>
                 <th scope="col">Vuelo</th>
-                <th scope="col">Origen</th>
-                <th scope="col">Destino</th>
-                <th scope="col">Fecha de salida</th>
-                <th scope="col">Fecha de llegada</th>
-                <th scope="col">Bussiness</th>
-                <th scope="col">Optima</th>
-                <th scope="col">Economy</th>
-                <th scope="col">Comprar</th>
+				<th scope="col">Origen</th>
+				<th scope="col">Destino</th>
+				<th scope="col">Fecha de salida</th>
+				<th scope="col">Fecha de llegada</th>
+				<th scope="col">Bussiness</th>
+				<th scope="col">Optima</th>
+				<th scope="col">Economy</th>
+				<th scope="col">Plazas Bussiness</th>
+				<th scope="col">Plazas Economy</th>
+				<th scope="col">Plazas Optima</th>
+				<th scope="col">Comprar</th>
             </tr>
         </thead>
         <tbody>
 
-            <tr ng-repeat="x in vuelosVuelta | filter: {origen: billeteIda.destino, destino: billeteIda.origen, salida: formatearFecha2(salida2)} | limitTo:30 ">
+            <tr ng-repeat="x in vuelosVuelta ">
                 <td>{{x.vuelo}}</td>
-                <td>{{x.origen}}</td>
-                <td>{{x.destino}}</td>
-                <td>{{formatearFecha2(x.salida)}}</td>
-                <td>{{formatearFecha2(x.llegada)}}</td>
-                <td>{{x.bussiness+"€"}}</td>
-                <td>{{x.optima+"€"}}</td>
-                <td>{{x.economy+"€"}}</td>
+				<td>{{x.origen}}</td>
+				<td>{{x.destino}}</td>
+				<td>{{formatearFecha2(x.salida)}}</td>
+				<td>{{formatearFecha2(x.llegada)}}</td>
+				<td>{{x.precio_business+"€"}}</td>
+				<td>{{x.precio_optima+"€"}}</td>
+				<td>{{x.precio_economy+"€"}}</td>
+				<td>{{x.plazas_business}}</td>
+				<td>{{x.plazas_optima}}</td>
+				<td>{{x.plazas_economy}}</td>
                 <td><button class="btn btn-primary" ng-click="escogerVuelta(x)">Escoger vuelta</button></td>
             </tr>
         </tbody>
     </table>
     </div>
+
 </div>

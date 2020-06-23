@@ -31,6 +31,23 @@ app.get('/vuelos/:origen/:destino/:salida', function (req, res) {
 	
 });
 
+//Obtener la vuelta
+app.get('/vuelos/vuelta/:origen/:destino/:salidaVuelta', function (req, res){
+	var sql = "SELECT * FROM vuelos WHERE origen = ? AND destino = ? and salida > ?";
+
+	var vueloVuelta = {
+		origen: req.params.origen,
+		destino: req.params.destino,
+		salidaVuelta: req.params.salidaVuelta
+	}
+
+	con.query(sql, [vueloVuelta.origen, vueloVuelta.destino, vueloVuelta.salidaVuelta], function(err, result){
+		if(err) throw err;
+
+		res.send(result);
+	});
+})
+
 con.connect(function (err) {
 	if (err) throw err;
 
