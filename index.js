@@ -13,17 +13,18 @@ var con = mysql.createConnection({
 app.use(express.static('public'));
 
 //Funcion para buscar los vuelos de IDA
-app.get('/vuelos/:origen/:destino/:salida', function (req, res) {
+app.get('/vuelos/ida/:origen/:destino/:salida/:numeroDePasajeros', function (req, res) {
 	
-	var sql = "SELECT * FROM vuelos WHERE origen = ? AND destino = ? and salida like ?";
-	
+	var sql = "SELECT * FROM vuelos WHERE origen = ? AND destino = ? and salida like ? and plazas_economy >= ? and plazas_optima >= ? and plazas_business > ?";
+	console.log("Buscando idas");
 	var vuelo = {
 		origen: req.params.origen,
 		destino: req.params.destino,
-		salida: req.params.salida
-	}
+		salida: req.params.salida,
+		numeroDePasajeros: req.params.numeroDePasajeros
+	};
 	
-	con.query(sql, [vuelo.origen, vuelo.destino, '%' + vuelo.salida +'%'], function (err, result) {
+	con.query(sql, [vuelo.origen, vuelo.destino, '%' + vuelo.salida +'%', vuelo.numeroDePasajeros, vuelo.numeroDePasajeros, vuelo.numeroDePasajeros ], function (err, result) {
 		if (err) throw err;
 		
 		res.send(result);
@@ -34,19 +35,19 @@ app.get('/vuelos/:origen/:destino/:salida', function (req, res) {
 //Obtener la vuelta
 app.get('/vuelos/vuelta/:origen/:destino/:salidaVuelta', function (req, res){
 	var sql = "SELECT * FROM vuelos WHERE origen = ? AND destino = ? and salida > ?";
-
+	console.log("Buscando vueltas");
 	var vueloVuelta = {
 		origen: req.params.origen,
 		destino: req.params.destino,
 		salidaVuelta: req.params.salidaVuelta
-	}
+	};
 
 	con.query(sql, [vueloVuelta.origen, vueloVuelta.destino, vueloVuelta.salidaVuelta], function(err, result){
 		if(err) throw err;
-
+		
 		res.send(result);
 	});
-})
+});
 
 con.connect(function (err) {
 	if (err) throw err;

@@ -42,9 +42,9 @@
         <select class="custom-select" ng-model="idaVuelta" ng-options="item as item.tipo for item in opcionesIdaVuelta" ng-init="idaVuelta = opcionesIdaVuelta[0]">
 
         </select> <br> <br>
-        Seleccione el numero de usuarios:
+        <!--Seleccione el numero de usuarios:
         <br><br>
-        <button class="btn btn-primary" ng-click="addBillete(1)"> + </button> {{numeroDeBilletes}} <button class="btn btn-primary" ng-click="addBillete(-1)"> - </button>
+        <button class="btn btn-primary" ng-click="addBillete(1)"> + </button> {{numeroDeBilletes}} <button class="btn btn-primary" ng-click="addBillete(-1)"> - </button>-->
     </div>
     <br>
     <h4>Precio total: {{getPrecioFinal()}}</h4>
@@ -58,7 +58,7 @@
     
     <div class="booking-form-box-2">
         <label>Fecha de vuelta: </label>
-        <input type="date" ng-model="$parent.salidaVuelta" class="form-control select-date">
+        <input type="date" ng-model="$parent.salidaVuelta" ng-change="actualizarVuelta()" class="form-control select-date">
     </div>
 </div>
 
@@ -84,7 +84,7 @@
         </thead>
         <tbody>
 
-            <tr ng-repeat="x in vuelosVuelta ">
+            <tr ng-repeat="x in vuelosVuelta">
                 <td>{{x.vuelo}}</td>
 				<td>{{x.origen}}</td>
 				<td>{{x.destino}}</td>

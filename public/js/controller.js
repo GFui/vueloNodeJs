@@ -5,7 +5,7 @@ angular.module('myApp', ['ngRoute'])
 				controller: 'customersCtrl',
 				templateUrl: 'vistas/buscadorVuelos.html'
 			})
-			.when('/vuelo/:vueloSeleccionado', {
+			.when('/vuelo/:vueloSeleccionado/:numeroDePasajeros', {
 				controller: 'vueloCtrl',
 				templateUrl: '/vistas/vueloView.html'
 			})
@@ -14,33 +14,32 @@ angular.module('myApp', ['ngRoute'])
 			});
 	})
 	.controller('customersCtrl', function ($scope, $http) {
-
-		$scope.Buscarvuelos = function () {
+		$scope.numeroDePasajeros = 0;
+		$scope.buscarVuelos = function () {
 
 			if ($scope.origen == "" || $scope.origen == null) {
 				window.alert("No has seleccionado una ciudad de origen!");
 			} else if ($scope.destino == "" || $scope.destino == null) {
-
 				window.alert("No has seleccionado una ciudad de destino!");
 			} else if ($scope.salida == "" || $scope.salida == null) {
 				window.alert("No has seleccionado fecha de salida!");
+			} else if ($scope.numeroDePasajeros == 0) {
+				window.alert("No has seleccionado un número de pasajeros!");
 			} else {
 				$scope.myData = [];
 				$scope.bandera = 1;
-				$http.get("vuelos/" + $scope.origen + '/' + $scope.destino + '/' + $scope.formatearFecha($scope.salida)).then(function (response) {
-
+				$http.get("vuelos/ida/" + $scope.origen + '/' + $scope.destino + '/' + $scope.formatearFecha($scope.salida) + '/' + $scope.numeroDePasajeros).then(function (response) {
 					$scope.myData = JSON.parse(JSON.stringify(response.data));
 					if ($scope.myData.length == 0) {
 						window.alert("No existe ningún vuelo que coincida con tu búsqueda");
 					}
-
 				});
 			}
 
 		};
 
-		$scope.formatearFecha = function (fecha) { //Este es para buscar en la db, aqui fecha es un objeto tipo Date
 
+		$scope.formatearFecha = function (fecha) { //Este es para buscar en la db, aqui fecha es un objeto tipo Date
 
 			if (fecha != null) {
 				var d = new Date(fecha),
@@ -70,12 +69,6 @@ angular.module('myApp', ['ngRoute'])
 			return horaTotal;
 
 
-		};
-
-		$scope.cambioHora = function (horaJ) {
-			var fecha = new Date(horaJ);
-			//return tempsin[0];
-			return fecha + "";
 		};
 
 
@@ -186,25 +179,14 @@ angular.module('myApp', ['ngRoute'])
 
 		};
 
-
-		$scope.$watch('salidaVuelta', function updatePdfUrl(newsalidaVuelta, oldsalidaVuelta) {
-			if (newsalidaVuelta != oldsalidaVuelta) {
-
-				console.log("salida vuelta: " + $scope.formatearFecha($scope.salidaVuelta) + ", llegada ida: " + $scope.formatearFecha($scope.billeteIda.llegada));
-				if ($scope.formatearFecha($scope.salidaVuelta) < $scope.formatearFecha($scope.billeteIda.llegada)) {
-					window.alert("La fecha de salida del vuelo de vuelta es anterior a la fecha de llegada!");
-					$scope.salidaVuelta = oldsalidaVuelta;
-				} else {
-
-					$scope.vuelosVuelta = [];
-					$http.get("vuelos/vuelta/" + $scope.billeteIda.destino + '/' + $scope.billeteIda.origen + '/' + $scope.formatearFecha($scope.salidaVuelta)).
-						then(function (response) {
-							$scope.vuelosVuelta = JSON.parse(JSON.stringify(response.data));
-							console.log($scope.vuelosVuelta);
-							console.log("vuelos/vuelta/" + $scope.billeteIda.destino + '/' + $scope.billeteIda.origen + '/' + $scope.formatearFecha($scope.billeteIda.llegada));
-						});
-				}
-			}
-		});
+		$scope.actualizarVuelta = function () {
+			console.log("vuelos/vuelta/" + $scope.billeteIda.destino + '/' + $scope.billeteIda.origen + '/' + $scope.formatearFecha($scope.salidaVuelta));
+			$scope.vuelosVuelta = [];
+			$http.get("vuelos/vuelta/" + $scope.billeteIda.destino + '/' + $scope.billeteIda.origen + '/' + $scope.formatearFecha($scope.salidaVuelta)).
+				then(function (response) {
+					console.log("hello?");
+					$scope.vuelosVuelta = JSON.parse(JSON.stringify(response.data));
+				});
+		};
 
 	});
