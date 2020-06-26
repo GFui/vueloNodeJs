@@ -12,6 +12,31 @@ var con = mysql.createConnection({
 
 app.use(express.static('public'));
 
+//Funcion para crear vuelo
+app.get('/vuelos/vuelosC/:vueloC/:origenC/:destinoC/:salidaC/:llegadaC/:precio_businessC/:precio_optimaC/:precio_economyC/:plazas_businessC/:plazas_optimaC/:plazas_economyC', function (req, res) {
+	console.log("crear vuelo");
+	var sql = "INSERT INTO vuelos VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+	var DatosVuelo = {
+		vueloC: req.params.vueloC,
+        origenC: req.params.origenC,
+        destinoC: req.params.destinoC,
+        salidaC: req.params.salidaC,
+        llegadaC: req.params.llegadaC,
+        precio_businessC: req.params.precio_businessC,
+        precio_optimaC: req.params.precio_optimaC,
+        precio_economyC: req.params.precio_economyC,
+        plazas_businessC: req.params.plazas_businessC,
+        plazas_optimaC: req.params.plazas_optimaC,
+		plazas_economyC: req.params.plazas_economyC
+	};
+	
+	con.query(sql, [DatosVuelo.vueloC, DatosVuelo.origenC, DatosVuelo.destinoC, DatosVuelo.salidaC, DatosVuelo.llegadaC, DatosVuelo.precio_businessC, DatosVuelo.precio_optimaC, DatosVuelo.precio_economyC, DatosVuelo.plazas_businessC, DatosVuelo.plazas_optimaC, DatosVuelo.plazas_economyC], function (err, result) {
+		if (err) throw err;		
+		console.log("1 record inserted");
+        res.send(result);
+	});
+	
+});
 //Funcion para loguear compañia
 app.get('/vuelos/log/:usuario/:password', function (req, res) {
 	console.log("Buscando usuario");
