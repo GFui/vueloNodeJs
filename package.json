@@ -1,0 +1,24 @@
+{
+  "name": "vuelo",
+  "version": "1.0.0",
+  "description": "Segundo trabajo de la asignatura “Laboratorio de Ingeniería del Software”",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GFui/vueloNodeJs.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GFui/vueloNodeJs/issues"
+  },
+  "homepage": "https://github.com/GFui/vueloNodeJs#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mysql": "^2.18.1"
+  },
+  "devDependencies": {}
+}

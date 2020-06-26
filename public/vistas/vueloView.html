@@ -1,0 +1,105 @@
+<div class="row">
+
+    <div class="booking-form-box-2 col-6">
+        <p>Ida seleccionada: </p>
+
+        <p>Origen: {{billeteIda.origen}}</p>
+        <p>Destino: {{billeteIda.destino}}</p>
+        <p>Salida: {{formatearFecha(billeteIda.salida)}}</p>
+        <p>Llegada: {{formatearFecha(billeteIda.llegada)}}</p>
+        <br>
+        
+        <div ng-if="idaVuelta.valor==2 && billeteVuelta==null">
+
+        </div>
+        <select class="custom-select" ng-model="claseSelecIda" ng-options="item as item.tipo for item in opcionesVueloIda">
+            <option value="">Por favor escoge una clase</option>
+        </select> <br> <br>
+
+
+    </div>
+
+    <br>
+    <div class="booking-form-box-2 col-6" ng-if="billeteVuelta != null && idaVuelta.valor==2">
+        Vuelta seleccionada:
+        <p>Origen: {{billeteVuelta.origen}}</p>
+        <p>Destino: {{billeteVuelta.destino}}</p>
+        <p>Salida: {{formatearFecha2(billeteVuelta.salida)}}</p>
+        <p>Llegada: {{formatearFecha2(billeteVuelta.llegada)}}</p>
+
+        <br>
+
+        <select class="custom-select" ng-model="$parent.claseSelecVuelta" ng-options="item as item.tipo for item in opcionesVueloVuelta">
+            <option value="">Por favor escoge una clase</option>
+        </select> <br> <br>
+
+    </div>
+
+</div>
+<div class="booking-form-box-2">
+    <div>
+        <label>Seleccione tipo de vuelo:</label>
+        <select class="custom-select" ng-model="idaVuelta" ng-options="item as item.tipo for item in opcionesIdaVuelta" ng-init="idaVuelta = opcionesIdaVuelta[0]">
+
+        </select> <br> <br>
+        <!--Seleccione el numero de usuarios:
+        <br><br>
+        <button class="btn btn-primary" ng-click="addBillete(1)"> + </button> {{numeroDeBilletes}} <button class="btn btn-primary" ng-click="addBillete(-1)"> - </button>-->
+    </div>
+    <br>
+    <h4>Precio total: {{getPrecioFinal()}}</h4>
+    <br>
+    <div>
+    <a class="btn btn-primary flight" href="index.html">Finalizar compra</a>
+    </div>
+</div>
+
+<div  ng-if="idaVuelta.valor==2 && billeteVuelta==null ">
+    
+    <div class="booking-form-box-2">
+        <label>Fecha de vuelta: </label>
+        <input type="date" ng-model="$parent.salidaVuelta" ng-change="actualizarVuelta()" class="form-control select-date">
+    </div>
+</div>
+
+<div  ng-if="idaVuelta.valor==2 && billeteVuelta==null && salidaVuelta != '' ">
+
+    <div class = "container-tabla">
+    <table id="dtBasicExample" class="table" cellspacing="0" width="100%">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Vuelo</th>
+				<th scope="col">Origen</th>
+				<th scope="col">Destino</th>
+				<th scope="col">Fecha de salida</th>
+				<th scope="col">Fecha de llegada</th>
+				<th scope="col">Bussiness</th>
+				<th scope="col">Optima</th>
+				<th scope="col">Economy</th>
+				<th scope="col">Plazas Bussiness</th>
+				<th scope="col">Plazas Economy</th>
+				<th scope="col">Plazas Optima</th>
+				<th scope="col">Comprar</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr ng-repeat="x in vuelosVuelta">
+                <td>{{x.vuelo}}</td>
+				<td>{{x.origen}}</td>
+				<td>{{x.destino}}</td>
+				<td>{{formatearFecha2(x.salida)}}</td>
+				<td>{{formatearFecha2(x.llegada)}}</td>
+				<td>{{x.precio_business+"€"}}</td>
+				<td>{{x.precio_optima+"€"}}</td>
+				<td>{{x.precio_economy+"€"}}</td>
+				<td>{{x.plazas_business}}</td>
+				<td>{{x.plazas_optima}}</td>
+				<td>{{x.plazas_economy}}</td>
+                <td><button class="btn btn-primary" ng-click="escogerVuelta(x)">Escoger vuelta</button></td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+
+</div>
