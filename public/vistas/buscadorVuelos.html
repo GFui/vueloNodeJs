@@ -57,9 +57,8 @@
                 <th scope="col">Comprar</th>
             </tr>
         </thead>
-        <tbody>
-
-            <tr ng-repeat="x in myData | filter:{ vuelo: idBase }">
+        <tbody ng-if="usuarioBase == null || usuarioBase == ''">
+            <tr ng-repeat="x in myData">
                 <td>{{x.vuelo}}</td>
                 <td>{{x.origen}}</td>
                 <td>{{x.destino}}</td>
@@ -72,6 +71,21 @@
                 <td>{{x.plazas_optima}}</td>
                 <td>{{x.plazas_economy}}</td>
                 <td><a class="btn btn-primary" href="/#!/vuelo/{{x}}/{{numeroDePasajeros}}" +>Seleccionar</a></td>
+            </tr>
+        </tbody>
+        <tbody ng-if="usuarioBase != null">
+            <tr ng-repeat="x in myData | filter:{ vuelo: idBase }">
+                <td>{{x.vuelo}}</td>
+                <td>{{x.origen}}</td>
+                <td>{{x.destino}}</td>
+                <td>{{formatearFecha2(x.salida)}}</td>
+                <td>{{formatearFecha2(x.llegada)}}</td>
+                <td>{{x.precio_business+"€"}}</td>
+                <td>{{x.precio_optima+"€"}}</td>
+                <td>{{x.precio_economy+"€"}}</td>
+                <td>{{x.plazas_business}}</td>
+                <td>{{x.plazas_optima}}</td>
+                <td>{{x.plazas_economy}}</td>               
             </tr>
         </tbody>
     </table>
