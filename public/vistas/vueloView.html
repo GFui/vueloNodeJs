@@ -8,7 +8,7 @@
         <p>Salida: {{formatearFecha(billeteIda.salida)}}</p>
         <p>Llegada: {{formatearFecha(billeteIda.llegada)}}</p>
         <br>
-        
+
         <div ng-if="idaVuelta.valor==2 && billeteVuelta==null">
 
         </div>
@@ -50,56 +50,81 @@
     <h4>Precio total: {{getPrecioFinal()}}</h4>
     <br>
     <div>
-    <a class="btn btn-primary flight" href="index.html">Finalizar compra</a>
+        <a class="btn btn-primary flight" data-toggle="modal" data-target="#pass">Finalizar compra</a>
     </div>
 </div>
 
-<div  ng-if="idaVuelta.valor==2 && billeteVuelta==null ">
-    
+<div ng-if="idaVuelta.valor==2 && billeteVuelta==null ">
+
     <div class="booking-form-box-2">
         <label>Fecha de vuelta: </label>
         <input type="date" ng-model="$parent.salidaVuelta" ng-change="actualizarVuelta()" class="form-control select-date">
     </div>
 </div>
 
-<div  ng-if="idaVuelta.valor==2 && billeteVuelta==null && salidaVuelta != '' ">
+<div ng-if="idaVuelta.valor==2 && billeteVuelta==null && salidaVuelta != '' ">
 
-    <div class = "container-tabla">
-    <table id="dtBasicExample" class="table" cellspacing="0" width="100%">
-        <thead class="thead-dark">
-            <tr>
-                <th scope="col">Vuelo</th>
-				<th scope="col">Origen</th>
-				<th scope="col">Destino</th>
-				<th scope="col">Fecha de salida</th>
-				<th scope="col">Fecha de llegada</th>
-				<th scope="col">Bussiness</th>
-				<th scope="col">Optima</th>
-				<th scope="col">Economy</th>
-				<th scope="col">Plazas Bussiness</th>
-				<th scope="col">Plazas Economy</th>
-				<th scope="col">Plazas Optima</th>
-				<th scope="col">Comprar</th>
-            </tr>
-        </thead>
-        <tbody>
+    <div class="container-tabla">
+        <table id="dtBasicExample" class="table" cellspacing="0" width="100%">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Vuelo</th>
+                    <th scope="col">Origen</th>
+                    <th scope="col">Destino</th>
+                    <th scope="col">Fecha de salida</th>
+                    <th scope="col">Fecha de llegada</th>
+                    <th scope="col">Bussiness</th>
+                    <th scope="col">Optima</th>
+                    <th scope="col">Economy</th>
+                    <th scope="col">Plazas Bussiness</th>
+                    <th scope="col">Plazas Economy</th>
+                    <th scope="col">Plazas Optima</th>
+                    <th scope="col">Comprar</th>
+                </tr>
+            </thead>
+            <tbody>
 
-            <tr ng-repeat="x in vuelosVuelta">
-                <td>{{x.vuelo}}</td>
-				<td>{{x.origen}}</td>
-				<td>{{x.destino}}</td>
-				<td>{{formatearFecha2(x.salida)}}</td>
-				<td>{{formatearFecha2(x.llegada)}}</td>
-				<td>{{x.precio_business+"€"}}</td>
-				<td>{{x.precio_optima+"€"}}</td>
-				<td>{{x.precio_economy+"€"}}</td>
-				<td>{{x.plazas_business}}</td>
-				<td>{{x.plazas_optima}}</td>
-				<td>{{x.plazas_economy}}</td>
-                <td><button class="btn btn-primary" ng-click="escogerVuelta(x)">Escoger vuelta</button></td>
-            </tr>
-        </tbody>
-    </table>
+                <tr ng-repeat="x in vuelosVuelta">
+                    <td>{{x.vuelo}}</td>
+                    <td>{{x.origen}}</td>
+                    <td>{{x.destino}}</td>
+                    <td>{{formatearFecha2(x.salida)}}</td>
+                    <td>{{formatearFecha2(x.llegada)}}</td>
+                    <td>{{x.precio_business+"€"}}</td>
+                    <td>{{x.precio_optima+"€"}}</td>
+                    <td>{{x.precio_economy+"€"}}</td>
+                    <td>{{x.plazas_business}}</td>
+                    <td>{{x.plazas_optima}}</td>
+                    <td>{{x.plazas_economy}}</td>
+                    <td><button class="btn btn-primary" ng-click="escogerVuelta(x)">Escoger vuelta</button></td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 
 </div>
+
+<!-- Modal Vuelos -->
+<div class="modal fade" id="pass" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Introducir pasajeros</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+            </div>
+            <div class="modal-body">
+                <label>Nombre</label>
+                <input type="text" ng-model="nombreP" class="form-control" placeholder="">
+                <label>Apellidos</label>
+                <input type="text" ng-model="apellidoP" class="form-control" placeholder="">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" ng-click="compra()">Añadir Pasajero</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Fin Modal -->

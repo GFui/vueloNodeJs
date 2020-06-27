@@ -12,6 +12,66 @@ var con = mysql.createConnection({
 
 app.use(express.static('public'));
 
+//Funcion para insertar pasajero
+app.get('/vuelos/pasajero/:nombreP/:apellidosP/', function (req, res) {
+    console.log("crear pasajero");
+    var sql = "INSERT INTO pasajeros(nombre,apellidos) VALUES (?,?)";
+    var DatosPasajero = {
+        nombreP: req.params.nombreP,
+        apellidosP: req.params.apellidosP
+    };
+
+    con.query(sql, [DatosPasajero.nombreP, DatosPasajero.apellidosP], function (err, result) {
+        if (err) throw err;
+        console.log("1 record pasajero");
+        res.send(result);
+    });
+
+});
+
+//Funcion para actualizar plazas
+app.get('/vuelos/restar/:vuelo/:salida/:plazas_businnes/:plazas_optima/:plazas_economy/', function (req, res) {
+    console.log("crear compra");
+    var sql = "UPDATE vuelos SET plazas_business = ? , plazas_optima = ? , plazas_economy = ? WHERE vuelo = ? AND salida = ?";
+    var DatosActual = {
+        plazas_businnes: req.params.plazas_businnes,
+        plazas_optima: req.params.plazas_optima,
+        plazas_economy: req.params.plazas_economy,
+        vuelo: req.params.vuelo,
+        salida: req.params.salida
+    };
+
+    con.query(sql, [DatosActual.plazas_businnes, DatosActual.plazas_optima,DatosActual.plazas_economy,DatosActual.vuelo,DatosActual.salida], function (err, result) {
+        if (err) throw err;
+        console.log("1 record compra");
+        res.send(result);
+    });
+
+});
+
+//Funcion para insertar compra
+app.get('/vuelos/compra/:fecha_compra/:fecha_vuelo/:vuelo/:salida/:npas_businnes/:npas_optima/:npas_economy/', function (req, res) {
+    console.log("crear compra");
+    var sql = "INSERT INTO compras(fecha_compra,fecha_vuelo,vuelo,salida,npas_businnes,npas_optima,npas_economy) VALUES (?,?,?,?,?,?,?)";
+    var DatosCompra = {
+        fecha_compra: req.params.fecha_compra,
+        fecha_vuelo: req.params.fecha_vuelo,
+        vuelo: req.params.vuelo,
+        salida: req.params.salida,
+        npas_businnes: req.params.npas_businnes,
+        npas_optima: req.params.npas_optima,
+        npas_economy: req.params.npas_economy
+
+    };
+
+    con.query(sql, [DatosCompra.fecha_compra, DatosCompra.fecha_vuelo,DatosCompra.vuelo,DatosCompra.salida,DatosCompra.npas_businnes,DatosCompra.npas_optima,DatosCompra.npas_economy], function (err, result) {
+        if (err) throw err;
+        console.log("1 record compra");
+        res.send(result);
+    });
+
+});
+
 //Funcion para crear vuelo
 app.get('/vuelos/vuelosC/:vueloC/:origenC/:destinoC/:salidaC/:llegadaC/:precio_businessC/:precio_optimaC/:precio_economyC/:plazas_businessC/:plazas_optimaC/:plazas_economyC', function (req, res) {
 	console.log("crear vuelo");
@@ -92,7 +152,6 @@ app.get('/vuelos/vuelta/:origen/:destino/:salidaVuelta', function (req, res){
 
 con.connect(function (err) {
 	if (err) throw err;
-
 	console.log("Connected to MySQL!");
 
 });
