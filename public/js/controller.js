@@ -83,17 +83,67 @@
                      if ($scope.myCompra.length == 0) {
                          window.alert("No existe ninguna compra");
                      }
-                     if($scope.banderaH == 0){
-                        $scope.banderaH = 1; 
-                     }else{
-                        $scope.banderaH = 0; 
+                     if ($scope.banderaH == 0) {
+                         $scope.banderaH = 1;
+                     } else {
+                         $scope.banderaH = 0;
                      }
-                     
+
                  });
              }
 
          };
+         //cargar datos en modal de modificacion de vuelos
+         $scope.Mod = function (x) {
+             $scope.vueloC = x.vuelo;
+             $scope.origenC = x.origen;
+             $scope.destinoC = x.destino;
+             $scope.salidaC = x.salida;
+             $scope.llegadaC = x.llegada;
+             $scope.precio_businessC = x.precio_business;
+             $scope.precio_optimaC = x.precio_optima;
+             $scope.precio_economyC = x.precio_economy;
+             $scope.plazas_businessC = x.plazas_business;
+             $scope.plazas_optimaC = x.plazas_optima;
+             $scope.plazas_economyC = x.plazas_economy;
+             $("#vueloM").modal("show");
+         }
+         //modifica el vuelo en cuestion
+         $scope.modificarVuelo = function () {
+             if ($scope.precio_businessC == "" || $scope.precio_businessC == null) {
+                 window.alert("No se ha introducido precio business!");
+             } else if ($scope.precio_optimaC == "" || $scope.precio_optimaC == null) {
+                 window.alert("No se ha introducido precio optima!");
+             } else if ($scope.precio_economyC == "" || $scope.precio_economyC == null) {
+                 window.alert("No se ha introducido precio economy!");
+             } else if ($scope.plazas_businessC == "" || $scope.plazas_businessC == null) {
+                 window.alert("No se ha introducido plazas business!");
+             } else if ($scope.plazas_optimaC == "" || $scope.plazas_optimaC == null) {
+                 window.alert("No se ha introducido plazas optima!");
+             } else if ($scope.plazas_economyC == "" || $scope.plazas_economyC == null) {
+                 window.alert("No se ha introducido plazas economy!");
+             } else {
+                 $http.get("vuelos/vueloM/" + $scope.vueloC + '/' + $scope.origenC + '/' + $scope.destinoC + '/' + $scope.salidaC + '/' + $scope.llegadaC + '/' + $scope.precio_businessC + '/' + $scope.precio_optimaC + '/' + $scope.precio_economyC + '/' + $scope.plazas_businessC + '/' + $scope.plazas_optimaC + '/' + $scope.plazas_economyC).then(function (response) {
+                     window.alert("vuelo modificado");
+                     //limpia variables
+                     $scope.vueloC = '';
+                     $scope.origenC = '';
+                     $scope.destinoC = '';
+                     $scope.salidaC = '';
+                     $scope.llegadaC = '';
+                     $scope.precio_businessC = '';
+                     $scope.precio_optimaC = '';
+                     $scope.precio_economyC = '';
+                     $scope.plazas_businessC = '';
+                     $scope.plazas_optimaC = '';
+                     $scope.plazas_economyC = '';
+                     
+                     $("#vueloM").modal("hide");
+                 });
+             }
 
+         };
+         //crea vuelo desde apartado de aerolinea
          $scope.crearVuelo = function () {
              var salidaC = formatearFecha3($scope.salidaC);
              var llegadaC = formatearFecha3($scope.llegadaC);
@@ -122,7 +172,20 @@
              } else {
                  $http.get("vuelos/vuelosC/" + $scope.vueloC + '/' + $scope.origenC + '/' + $scope.destinoC + '/' + salidaC + '/' + llegadaC + '/' + $scope.precio_businessC + '/' + $scope.precio_optimaC + '/' + $scope.precio_economyC + '/' + $scope.plazas_businessC + '/' + $scope.plazas_optimaC + '/' + $scope.plazas_economyC).then(function (response) {
                      window.alert("vuelo añadido");
-                     $("#vuelosC").modal("hide");
+                     //limpia variables
+                     $scope.vueloC = '';
+                     $scope.origenC = '';
+                     $scope.destinoC = '';
+                     $scope.salidaC = '';
+                     $scope.llegadaC = '';
+                     $scope.precio_businessC = '';
+                     $scope.precio_optimaC = '';
+                     $scope.precio_economyC = '';
+                     $scope.plazas_businessC = '';
+                     $scope.plazas_optimaC = '';
+                     $scope.plazas_economyC = '';
+                     
+                     $("#vueloC").modal("hide");
                  });
              }
 

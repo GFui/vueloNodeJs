@@ -28,7 +28,28 @@ app.get('/vuelos/pasajero/:nombreP/:apellidosP/', function (req, res) {
     });
 
 });
+//Funcion para modificar vuelo
+app.get('/vuelos/vueloM/:vueloC/:origenC/:destinoC/:salidaC/:llegadaC/:precio_businessC/:precio_optimaC/:precio_economyC/:plazas_businessC/:plazas_optimaC/:plazas_economyC', function (req, res) {
+    console.log("crear compra");
+    var sql = "UPDATE vuelos SET precio_business = ?, precio_optima = ?, precio_economy = ?, plazas_business = ? , plazas_optima = ? , plazas_economy = ? WHERE vuelo = ? AND salida = ?";
+    var DatosMod = {
+        precio_businessC: req.params.precio_businessC,
+        precio_optimaC: req.params.precio_optimaC,
+        precio_economyC: req.params.precio_economyC,
+        plazas_businnes: req.params.plazas_businessC,
+        plazas_optima: req.params.plazas_optimaC,
+        plazas_economy: req.params.plazas_economyC,
+        vuelo: req.params.vueloC,
+        salida: req.params.salidaC
+    };
 
+    con.query(sql, [DatosMod.precio_businessC,DatosMod.precio_optimaC,DatosMod.precio_economyC,DatosMod.plazas_businnes,DatosMod.plazas_optima,DatosMod.plazas_economy,DatosMod.vuelo,DatosMod.salida], function (err, result) {
+        if (err) throw err;
+        console.log("1 record modificacion");
+        res.send(result);
+    });
+
+});
 //Funcion para actualizar plazas
 app.get('/vuelos/restar/:vuelo/:salida/:plazas_businnes/:plazas_optima/:plazas_economy/', function (req, res) {
     console.log("crear compra");
@@ -43,7 +64,7 @@ app.get('/vuelos/restar/:vuelo/:salida/:plazas_businnes/:plazas_optima/:plazas_e
 
     con.query(sql, [DatosActual.plazas_businnes, DatosActual.plazas_optima,DatosActual.plazas_economy,DatosActual.vuelo,DatosActual.salida], function (err, result) {
         if (err) throw err;
-        console.log("1 record compra");
+        console.log("1 record actualizacion");
         res.send(result);
     });
 

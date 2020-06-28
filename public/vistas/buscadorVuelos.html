@@ -87,7 +87,8 @@
                 <td>{{x.precio_economy+"€"}}</td>
                 <td>{{x.plazas_business}}</td>
                 <td>{{x.plazas_optima}}</td>
-                <td>{{x.plazas_economy}}</td>
+                <td>{{x.plazas_economy}}</td>                
+                <td><button type="button" class="btn btn-primary" ng-click="Mod(x)">Modificar</button></td>
             </tr>
         </tbody>
     </table>
@@ -145,11 +146,55 @@
 </div>
 <!-- Fin Modal -->
 <!-- Modal Vuelos -->
+<div class="modal fade" id="vueloM" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modificar Vuelo</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <label>Vuelo</label>
+                <br>
+                <label>{{vueloC}}</label>
+                <br>
+                <label>Origen</label>
+                <br>
+                <label>{{origenC}}</label>
+                <br>
+                <label>Destino</label>
+                <br>
+                <label>{{destinoC}}</label>
+                <br>
+                <label>Precio business</label>
+                <input type="text" ng-model="precio_businessC" class="form-control" placeholder="">
+                <label>Precio optima</label>
+                <input type="text" ng-model="precio_optimaC" class="form-control" placeholder="">
+                <label>Precio economy</label>
+                <input type="text" ng-model="precio_economyC" class="form-control" placeholder="">
+                <label>Plazas business</label>
+                <input type="text" ng-model="plazas_businessC" class="form-control" placeholder="">
+                <label>Plazas optima</label>
+                <input type="text" ng-model="plazas_optimaC" class="form-control" placeholder="">
+                <label>Plazas economy</label>
+                <input type="text" ng-model="plazas_economyC" class="form-control" placeholder="">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" ng-click="modificarVuelo()">Modificar Vuelo</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Fin Modal -->
+<!-- Modal Vuelos -->
 <div class="modal fade" id="vueloC" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Iniciar sesión como aerolínea</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Crear vuelo</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -163,10 +208,8 @@
                 <input type="text" ng-model="destinoC" class="form-control" placeholder="">
                 <label>Salida</label>
                 <input type="datetime-local" ng-model="salidaC" class="form-control select-date">
-                <!--<input type="text" ng-model="salidaC" class="form-control" placeholder="">-->
                 <label>Llegada</label>
                 <input type="datetime-local" ng-model="llegadaC" class="form-control select-date">
-                <!--<input type="text" ng-model="llegadaC" class="form-control" placeholder=""> -->
                 <label>Precio business</label>
                 <input type="text" ng-model="precio_businessC" class="form-control" placeholder="">
                 <label>Precio optima</label>
