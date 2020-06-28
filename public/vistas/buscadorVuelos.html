@@ -1,0 +1,233 @@
+<div class="booking-cosas">
+    <div class="booking-form-box">
+        <ul class="navbar-nav ml-auto">
+            <h5>Inciar sesión como aerolínea</h5>
+            <label ng-if="usuarioBase == null || usuarioBase == ''" class="nav-item">
+                <a class="btn btn-primary" data-toggle="modal" data-target="#login">Iniciar sesión</a>
+            </label>
+            <label ng-if="usuarioBase != null" class="nav-item">
+                <h5>{{usuarioBase}}</h5>
+                <button class="btn btn-primary" ng-click="unlogin()">Cerrar sesión</button>
+                <a style="color:white" class="btn btn-primary" data-toggle="modal" data-target="#vueloC">Crear vuelo</a>
+
+                <a style="color:white;margin-top: 10px" class="btn btn-primary" ng-click="Hcompras()">Historial Compras</a>
+            </label>
+        </ul>
+    </div>
+</div>
+
+<div class="booking-cosas">
+    <div class="booking-form-box">
+
+        <div class="booking-form">
+            <label>Origen</label>
+            <input type="text" ng-model="origen" class="form-control" placeholder="Ciudad Origen">
+            <label>Destino</label>
+            <input type="text" ng-model="destino" class="form-control" placeholder="Ciudad Destino">
+            <div class="input-grp">
+                <label>Salida</label>
+                <input type="date" ng-model="salida" class="form-control select-date">
+            </div>
+            <div class="input-grp">
+                <label></label>
+                <button type="button" class="btn btn-primary flight" ng-click="buscarVuelos()">Mostrar Vuelos</button>
+            </div>
+            <div class="input-grp">
+                <label for="numPasajeros">Número de pasajeros</label>
+                <input type="number" min="1" ng-model="numeroDePasajeros" id="numPasajeros" ng-change="buscarVuelos()">
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="container-tabla" ng-if="bandera == 1 && origen != '' && origen != null">
+    <table id="dtBasicExample" class="table" cellspacing="0" width="100%">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Vuelo</th>
+                <th scope="col">Origen</th>
+                <th scope="col">Destino</th>
+                <th scope="col">Fecha de salida</th>
+                <th scope="col">Fecha de llegada</th>
+                <th scope="col">Bussiness</th>
+                <th scope="col">Optima</th>
+                <th scope="col">Economy</th>
+                <th scope="col">Plazas Bussiness</th>
+                <th scope="col">Plazas Optima</th>
+                <th scope="col">Plazas Economy</th>
+                <th scope="col">Comprar</th>
+            </tr>
+        </thead>
+        <tbody ng-if="usuarioBase == null || usuarioBase == ''">
+            <tr ng-repeat="x in myData">
+                <td>{{x.vuelo}}</td>
+                <td>{{x.origen}}</td>
+                <td>{{x.destino}}</td>
+                <td>{{formatearFecha2(x.salida)}}</td>
+                <td>{{formatearFecha2(x.llegada)}}</td>
+                <td>{{x.precio_business+"€"}}</td>
+                <td>{{x.precio_optima+"€"}}</td>
+                <td>{{x.precio_economy+"€"}}</td>
+                <td>{{x.plazas_business}}</td>
+                <td>{{x.plazas_optima}}</td>
+                <td>{{x.plazas_economy}}</td>
+                <td><a class="btn btn-primary" href="/#!/vuelo/{{x}}/{{numeroDePasajeros}}" +>Seleccionar</a></td>
+            </tr>
+        </tbody>
+        <tbody ng-if="usuarioBase != null">
+            <tr ng-repeat="x in myData | filter:{ vuelo: idBase }">
+                <td>{{x.vuelo}}</td>
+                <td>{{x.origen}}</td>
+                <td>{{x.destino}}</td>
+                <td>{{formatearFecha2(x.salida)}}</td>
+                <td>{{formatearFecha2(x.llegada)}}</td>
+                <td>{{x.precio_business+"€"}}</td>
+                <td>{{x.precio_optima+"€"}}</td>
+                <td>{{x.precio_economy+"€"}}</td>
+                <td>{{x.plazas_business}}</td>
+                <td>{{x.plazas_optima}}</td>
+                <td>{{x.plazas_economy}}</td>                
+                <td><button type="button" class="btn btn-primary" ng-click="Mod(x)">Modificar</button></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="container-tabla" ng-if="banderaH == 1">
+    <table id="dtBasicExample" class="table" cellspacing="0" width="100%">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Codigo de reserva</th>
+                <th scope="col">Fecha de la compra</th>
+                <th scope="col">Fecha del vuelo</th>
+                <th scope="col">Vuelo</th>
+                <th scope="col">Salida</th>
+                <th scope="col">Nº plazas Bussiness</th>
+                <th scope="col">Nº plazas Optima</th>
+                <th scope="col">Nº plazas Economy</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="x in myCompra | filter:{ vuelo: idBase } ">
+                <td>{{x.cod_reserva}}</td>
+                <td>{{x.fecha_compra}}</td>
+                <td>{{x.fecha_vuelo}}</td>
+                <td>{{x.vuelo}}</td>
+                <td>{{x.salida}}</td>
+                <td>{{x.npas_businnes}}</td>
+                <td>{{x.npas_optima}}</td>
+                <td>{{x.npas_economy}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<!-- Modal Sesion-->
+<div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Inciar sesión como aerolínea</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <label>Usuario</label>
+                <input type="text" ng-model="usuario" class="form-control" placeholder="compañia">
+                <label>Contraseña</label>
+                <input type="password" ng-model="password" class="form-control" placeholder="contraseña">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" ng-click="login()">Iniciar sesión</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Fin Modal -->
+<!-- Modal Vuelos -->
+<div class="modal fade" id="vueloM" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modificar Vuelo</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <label>Vuelo</label>
+                <br>
+                <label>{{vueloC}}</label>
+                <br>
+                <label>Origen</label>
+                <br>
+                <label>{{origenC}}</label>
+                <br>
+                <label>Destino</label>
+                <br>
+                <label>{{destinoC}}</label>
+                <br>
+                <label>Precio business</label>
+                <input type="text" ng-model="precio_businessC" class="form-control" placeholder="">
+                <label>Precio optima</label>
+                <input type="text" ng-model="precio_optimaC" class="form-control" placeholder="">
+                <label>Precio economy</label>
+                <input type="text" ng-model="precio_economyC" class="form-control" placeholder="">
+                <label>Plazas business</label>
+                <input type="text" ng-model="plazas_businessC" class="form-control" placeholder="">
+                <label>Plazas optima</label>
+                <input type="text" ng-model="plazas_optimaC" class="form-control" placeholder="">
+                <label>Plazas economy</label>
+                <input type="text" ng-model="plazas_economyC" class="form-control" placeholder="">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" ng-click="modificarVuelo()">Modificar Vuelo</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Fin Modal -->
+<!-- Modal Vuelos -->
+<div class="modal fade" id="vueloC" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Crear vuelo</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <label>Vuelo</label>
+                <input type="text" ng-model="vueloC" class="form-control" placeholder="">
+                <label>Origen</label>
+                <input type="text" ng-model="origenC" class="form-control" placeholder="">
+                <label>Destino</label>
+                <input type="text" ng-model="destinoC" class="form-control" placeholder="">
+                <label>Salida</label>
+                <input type="datetime-local" ng-model="salidaC" class="form-control select-date">
+                <label>Llegada</label>
+                <input type="datetime-local" ng-model="llegadaC" class="form-control select-date">
+                <label>Precio business</label>
+                <input type="text" ng-model="precio_businessC" class="form-control" placeholder="">
+                <label>Precio optima</label>
+                <input type="text" ng-model="precio_optimaC" class="form-control" placeholder="">
+                <label>Precio economy</label>
+                <input type="text" ng-model="precio_economyC" class="form-control" placeholder="">
+                <label>Plazas business</label>
+                <input type="text" ng-model="plazas_businessC" class="form-control" placeholder="">
+                <label>Plazas optima</label>
+                <input type="text" ng-model="plazas_optimaC" class="form-control" placeholder="">
+                <label>Plazas economy</label>
+                <input type="text" ng-model="plazas_economyC" class="form-control" placeholder="">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" ng-click="crearVuelo()">Añadir Vuelo</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Fin Modal -->
