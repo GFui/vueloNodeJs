@@ -162,14 +162,14 @@
          var Vplazas_businnes = 0;
          var Vplazas_optima = 0;
          var Vplazas_economy = 0;
-     
+
          $scope.escogerVuelta = function (x) {
 
              //compruebo si quedan plazas de vuelta
              if (x.plazas_business <= 0 && x.plazas_optima <= 0 && x.plazas_economy <= 0) {
                  return window.alert("No quedan plazas de vuelta");
-             } 
-             $scope.billeteVuelta = x;             
+             }
+             $scope.billeteVuelta = x;
 
              $scope.opcionesVueloVuelta = [{
                  tipo: "Economy",
@@ -182,10 +182,11 @@
                  precio: $scope.billeteVuelta.precio_business
 			}];
 
-             var Vplazas_businnes = $scope.billeteVuelta.plazas_business;
-             var Vplazas_optima = $scope.billeteVuelta.plazas_optima;
-             var Vplazas_economy = $scope.billeteVuelta.plazas_economy;
-
+             Vplazas_businnes = $scope.billeteVuelta.plazas_business;
+             Vplazas_optima = $scope.billeteVuelta.plazas_optima;
+             Vplazas_economy = $scope.billeteVuelta.plazas_economy;
+             console.log("dentro de:" );
+             console.log('O:' + Vplazas_businnes + '/B:' + Vplazas_optima + '/E:' + Vplazas_economy);
          }
          var plazas_businnes = $scope.billeteIda.plazas_business;
          var plazas_optima = $scope.billeteIda.plazas_optima;
@@ -226,9 +227,9 @@
                  $scope.formatear = formatearFecha($scope.CurrentDate);
 
                  if ($scope.nombreP == "" || $scope.nombreP == null) {
-                     window.alert("No se ha introducido vuelo!");
+                     window.alert("No se ha introducido nombre!");
                  } else if ($scope.apellidoP == "" || $scope.apellidoP == null) {
-                     window.alert("No se ha introducido origen!");
+                     window.alert("No se ha introducido apellido!");
                  } else {
                      //añado pasajero a BD
                      $http.get("vuelos/pasajero/" + $scope.nombreP + '/' + $scope.apellidoP).then(function (response) {
@@ -287,39 +288,40 @@
                  var Vnpas_businnes = 0;
                  var Vnpas_optima = 0;
                  var Vnpas_economy = 0;
-                 //compruebo la clase de vuelo Vuelta elegido
+                 //compruebo la clase de vuelo Vuelta elegido y qsi quedan plazas para esa clase
                  if ($scope.claseSelecVuelta == "" || $scope.claseSelecVuelta == null) {
                      $("#pass").modal("hide");
                      return window.alert("No se ha introducido tipo de vuelo vuelta!");
                  } else if ($scope.claseSelecVuelta.tipo == "Optima") {
                      Vnpas_optima = 1;
+                     Vplazas_optima = Vplazas_optima - Vnpas_optima;
+                     if (Vplazas_optima <= 0) {
+                         Vplazas_optima = Vplazas_optima + Vnpas_optima;
+                         $("#pass").modal("hide");
+                         return window.alert("No quedan plazas de vuelta en la categoria Optima");
+                     }
                  } else if ($scope.claseSelecVuelta.tipo == "Bussiness") {
                      Vnpas_businnes = 1;
+                     Vplazas_businnes = Vplazas_businnes - Vnpas_businnes;
+                     if (Vplazas_businnes <= 0) {
+                         Vplazas_businnes = Vplazas_businnes + Vnpas_businnes;
+                         $("#pass").modal("hide");
+                         return window.alert("No quedan plazas de vuelta en la categoria Bussiness");
+                     }
                  } else if ($scope.claseSelecVuelta.tipo == "Economy") {
                      Vnpas_economy = 1;
+                     Vplazas_economy = Vplazas_economy - Vnpas_economy;
+                     if (Vplazas_economy <= 0) {
+                         Vplazas_economy = Vplazas_economy + Vnpas_economy;
+                         $("#pass").modal("hide");
+                         return window.alert("No quedan plazas de vuelta en la categoria Economy");
+                     }
                  } else {
                      $("#pass").modal("hide");
                      return window.alert("No se ha introducido tipo de vuelo vuelta!");
                  }
                  console.log('O:' + Vnpas_optima + '/B:' + Vnpas_businnes + '/E:' + Vnpas_economy);
-                 //compruebo si quedan plazas de vuelta
                  console.log('O:' + Vplazas_businnes + '/B:' + Vplazas_optima + '/E:' + Vplazas_economy);
-                 if (Vplazas_businnes <= 0) {
-                     $("#pass").modal("hide");
-                     return window.alert("No quedan plazas de vuelta en la categoria Bussiness");
-                 } else if (Vplazas_optima <= 0) {
-                     $("#pass").modal("hide");
-                     return window.alert("No quedan plazas de vuelta en la categoria Optima");
-                 } else if (Vplazas_economy <= 0) {
-                     $("#pass").modal("hide");
-                     return window.alert("No quedan plazas de vuelta en la categoria Economy");
-                 }
-                 //actualizo valores de numero de plazas
-                 Vplazas_businnes = Vplazas_businnes - Vnpas_businnes;
-                 Vplazas_optima = Vplazas_optima - Vnpas_optima;
-                 Vplazas_economy = Vplazas_economy - Vnpas_economy;
-
-
                  console.log('O:' + Vplazas_businnes + '/B:' + Vplazas_optima + '/E:' + Vplazas_economy);
 
                  //fecha de hoy
@@ -452,18 +454,11 @@
              }
          }
 
-         $scope.finalizarCompra = function () {
-
-             window.alert("Su compra se ha realizado con éxito, recibirá el producto en su dirección habitual");
-
-         };
-
          $scope.actualizarVuelta = function () {
              console.log("vuelos/vuelta/" + $scope.billeteIda.destino + '/' + $scope.billeteIda.origen + '/' + $scope.formatearFecha($scope.salidaVuelta));
              $scope.vuelosVuelta = [];
              $http.get("vuelos/vuelta/" + $scope.billeteIda.destino + '/' + $scope.billeteIda.origen + '/' + $scope.formatearFecha($scope.salidaVuelta)).
              then(function (response) {
-                 console.log("hello?");
                  $scope.vuelosVuelta = JSON.parse(JSON.stringify(response.data));
              });
          };
