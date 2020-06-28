@@ -73,7 +73,8 @@
          };
 
          $scope.crearVuelo = function () {
-             console.log('Entro');
+             var salidaC = formatearFecha3($scope.salidaC);
+             var llegadaC = formatearFecha3($scope.llegadaC);
              if ($scope.vueloC == "" || $scope.vueloC == null) {
                  window.alert("No se ha introducido vuelo!");
              } else if ($scope.origenC == "" || $scope.origenC == null) {
@@ -97,11 +98,38 @@
              } else if ($scope.plazas_economyC == "" || $scope.plazas_economyC == null) {
                  window.alert("No se ha introducido plazas economy!");
              } else {
-                 $scope.usu = [];
-                 $http.get("vuelos/vuelosC/" + $scope.vueloC + '/' + $scope.origenC + '/' + $scope.destinoC + '/' + $scope.salidaC + '/' + $scope.llegadaC + '/' + $scope.precio_businessC + '/' + $scope.precio_optimaC + '/' + $scope.precio_economyC + '/' + $scope.plazas_businessC + '/' + $scope.plazas_optimaC + '/' + $scope.plazas_economyC).then(function (response) {
+                 $http.get("vuelos/vuelosC/" + $scope.vueloC + '/' + $scope.origenC + '/' + $scope.destinoC + '/' + salidaC + '/' + llegadaC + '/' + $scope.precio_businessC + '/' + $scope.precio_optimaC + '/' + $scope.precio_economyC + '/' + $scope.plazas_businessC + '/' + $scope.plazas_optimaC + '/' + $scope.plazas_economyC).then(function (response) {
                      window.alert("vuelo añadido");
                      $("#vuelosC").modal("hide");
                  });
+             }
+
+         };
+
+         function addZero(i) {
+             if (i < 10) {
+                 i = "0" + i;
+             }
+             return i;
+         }
+
+         function formatearFecha3(fecha) { //cambio formato fecha a //2020-09-04T17:30:00.000Z
+
+             if (fecha != null) {
+                 var d = new Date(fecha),
+                     month = '' + (d.getMonth() + 1),
+                     day = '' + d.getDate(),
+                     year = d.getFullYear(),
+                     hour = addZero(d.getHours()),
+                     min = addZero(d.getMinutes());
+
+                 if (month.length < 2)
+                     month = '0' + month;
+                 if (day.length < 2)
+                     day = '0' + day;
+
+                 var formato = [year, month, day].join('-') + 'T' + hour + ':' + min + ':' + '00.000Z';
+                 return formato;
              }
 
          };
@@ -185,7 +213,7 @@
              Vplazas_businnes = $scope.billeteVuelta.plazas_business;
              Vplazas_optima = $scope.billeteVuelta.plazas_optima;
              Vplazas_economy = $scope.billeteVuelta.plazas_economy;
-             console.log("dentro de:" );
+             console.log("dentro de:");
              console.log('O:' + Vplazas_businnes + '/B:' + Vplazas_optima + '/E:' + Vplazas_economy);
          }
          var plazas_businnes = $scope.billeteIda.plazas_business;
