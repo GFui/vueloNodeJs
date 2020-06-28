@@ -6,9 +6,11 @@
                 <a class="btn btn-primary" data-toggle="modal" data-target="#login">Iniciar sesión</a>
             </label>
             <label ng-if="usuarioBase != null" class="nav-item">
-                <h5>{{idBase}} : {{usuarioBase}}</h5>
+                <h5>{{usuarioBase}}</h5>
                 <button class="btn btn-primary" ng-click="unlogin()">Cerrar sesión</button>
-                <a class="btn btn-primary" data-toggle="modal" data-target="#vueloC">Crear vuelo</a>
+                <a style="color:white" class="btn btn-primary" data-toggle="modal" data-target="#vueloC">Crear vuelo</a>
+
+                <a style="color:white;margin-top: 10px" class="btn btn-primary" ng-click="Hcompras()">Historial Compras</a>
             </label>
         </ul>
     </div>
@@ -85,13 +87,40 @@
                 <td>{{x.precio_economy+"€"}}</td>
                 <td>{{x.plazas_business}}</td>
                 <td>{{x.plazas_optima}}</td>
-                <td>{{x.plazas_economy}}</td>               
+                <td>{{x.plazas_economy}}</td>
             </tr>
         </tbody>
     </table>
 </div>
-
-<!-- Modal sesion-->
+<div class="container-tabla" ng-if="banderaH == 1">
+    <table id="dtBasicExample" class="table" cellspacing="0" width="100%">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Codigo de reserva</th>
+                <th scope="col">Fecha de la compra</th>
+                <th scope="col">Fecha del vuelo</th>
+                <th scope="col">Vuelo</th>
+                <th scope="col">Salida</th>
+                <th scope="col">Nº plazas Bussiness</th>
+                <th scope="col">Nº plazas Optima</th>
+                <th scope="col">Nº plazas Economy</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="x in myCompra | filter:{ vuelo: idBase } ">
+                <td>{{x.cod_reserva}}</td>
+                <td>{{x.fecha_compra}}</td>
+                <td>{{x.fecha_vuelo}}</td>
+                <td>{{x.vuelo}}</td>
+                <td>{{x.salida}}</td>
+                <td>{{x.npas_businnes}}</td>
+                <td>{{x.npas_optima}}</td>
+                <td>{{x.npas_economy}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<!-- Modal Sesion-->
 <div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -133,11 +162,11 @@
                 <label>Destino</label>
                 <input type="text" ng-model="destinoC" class="form-control" placeholder="">
                 <label>Salida</label>
-                <input type="datetime-local" ng-model="salidaC" class="form-control select-date">                
-                <!--<input type="text" ng-model="salidaC" class="form-control" placeholder="">-->    
+                <input type="datetime-local" ng-model="salidaC" class="form-control select-date">
+                <!--<input type="text" ng-model="salidaC" class="form-control" placeholder="">-->
                 <label>Llegada</label>
                 <input type="datetime-local" ng-model="llegadaC" class="form-control select-date">
-                <!--<input type="text" ng-model="llegadaC" class="form-control" placeholder=""> -->                
+                <!--<input type="text" ng-model="llegadaC" class="form-control" placeholder=""> -->
                 <label>Precio business</label>
                 <input type="text" ng-model="precio_businessC" class="form-control" placeholder="">
                 <label>Precio optima</label>

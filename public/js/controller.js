@@ -72,6 +72,28 @@
              window.location.reload();
          };
 
+         $scope.banderaH = 0;
+         $scope.Hcompras = function () {
+             if ($scope.idBase == "" || $scope.idBase == null) {
+                 window.alert("Ha ocurrido un error en el inicio de sesión, no podemos recuperar su historial de compras!");
+             } else {
+                 $scope.myCompra = [];
+                 $http.get("vuelos/Hcompras/").then(function (response) {
+                     $scope.myCompra = JSON.parse(JSON.stringify(response.data));
+                     if ($scope.myCompra.length == 0) {
+                         window.alert("No existe ninguna compra");
+                     }
+                     if($scope.banderaH == 0){
+                        $scope.banderaH = 1; 
+                     }else{
+                        $scope.banderaH = 0; 
+                     }
+                     
+                 });
+             }
+
+         };
+
          $scope.crearVuelo = function () {
              var salidaC = formatearFecha3($scope.salidaC);
              var llegadaC = formatearFecha3($scope.llegadaC);

@@ -97,6 +97,16 @@ app.get('/vuelos/vuelosC/:vueloC/:origenC/:destinoC/:salidaC/:llegadaC/:precio_b
 	});
 	
 });
+//Funcion para recoger el historial de compras
+app.get('/vuelos/Hcompras/', function (req, res) {
+	console.log("Buscando compras");
+	var sql = "SELECT * FROM compras";	
+	con.query(sql, null, function (err, result) {
+		if (err) throw err;		
+		res.send(result);
+	});
+	
+});
 //Funcion para loguear compañia
 app.get('/vuelos/log/:usuario/:password', function (req, res) {
 	console.log("Buscando usuario");
